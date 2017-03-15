@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>
+
+@{
+    ViewBag.Title = "ListRoles";
+    Layout = "~/Areas/Administration/Views/Shared/_Layout.cshtml";
+    string Mesaggio = (ViewBag.Message ?? "") as String;
+}
+
+<h2>ListRoles</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateRole")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.ActionLink("Modifica", "EditRole", new { id=item.Id }) |
+            @Html.ActionLink("Dettagli", "DetailsRole", new { id=item.Id }) |
+            @Html.ActionLink("Elimina", "DeleteRole", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
+<!-- Trigger the modal with a button -->
+<button type="button" class="hidden" data-toggle="modal" data-target="#myModal" id="openM"></button>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Messaggio</h4>
+            </div>
+            <div class="modal-body">
+                <p>@Mesaggio</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    $(function () {
+        if ('@Mesaggio' != '')
+        {
+            $("#openM").click();
+        }
+    });
+</script>

@@ -1,0 +1,125 @@
+﻿@model CarSharing.Models.UsersPaginator
+
+@{
+    ViewBag.Title = "ListUsers";
+    Layout = "~/Areas/Administration/Views/Shared/_Layout.cshtml";
+
+    string dis1 = Model.CurrentPage == 1 ? "disabled" : "";
+    string dis2 = Model.CurrentPage == Model.TotalPages ? "disabled" : "";
+    string Mesaggio = (ViewBag.Message ?? "") as String;
+}
+
+<h2>ListUsers</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateUser")
+</p>
+<p>
+    <!-- Navigatore di Paginazione -->
+    <div class="form-group">
+        <div class="col-md-2">
+            <button class="btn btn-default" onclick="SetPage(1);" @dis1 ><<</button>
+            <button class="btn btn-default" onclick="SetPage(@Model.CurrentPage - 1);" @dis1 ><</button>
+        </div>
+
+        <div class="col-md-2">
+            @Model.CurrentPage di @Model.TotalPages
+        </div>
+
+        <div class="col-md-2">
+            <button class="btn btn-default" value=">" onclick="SetPage(@Model.CurrentPage + 1)"  @dis2 >></button>
+            <button class="btn btn-default" value=">>" onclick="SetPage(@Model.TotalPages);"  @dis2 >>></button>
+        </div>
+    </div>
+    <!-- Navigatore di Paginazione -->
+
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("Email", "ListUsers", new { Order = "Email", OppositeDirection = Model.OrderDirection })
+        </th>
+        <th>
+            @Html.ActionLink("Utente", "ListUsers", new { Order = "Utente", OppositeDirection = Model.OrderDirection })
+        </th>
+        <th>
+            @Html.DisplayName("Nome")
+        </th>
+        <th>
+            @Html.DisplayName("Cognome")
+        </th>
+        <th>
+            @Html.DisplayName("Attivo")
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model.Items) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Surname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Active)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditUser", new { id=item.Id }) |
+            @Html.ActionLink("Details", "DetailsUser", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "DeleteUser", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
+
+<input type="hidden" id="OrderField" value="@Model.OrderField" />
+<input type="hidden" id="OrderDir" value="@(Model.OrderDirection == "asc" ? "desc" : "asc")" />
+
+<!-- Trigger the modal with a button -->
+<button type="button" class="hidden" data-toggle="modal" data-target="#myModal" id="openM"></button>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Messaggio</h4>
+            </div>
+            <div class="modal-body">
+                <p>@Mesaggio</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+    <script>
+    function SetPage(n) {
+        location.href = "ListUsers?page=" + n +
+            "&Order=" + $("#OrderField").val() +
+            "&OppositeDirection=" + $("#OrderDir").val();
+    }
+
+    $(function () {
+        if ('@Mesaggio' != '')
+        {
+            $("#openM").click();
+        }
+    });
+
+    </script>

@@ -1,0 +1,48 @@
+﻿@model Microsoft.AspNet.Identity.EntityFramework.IdentityRole
+@{
+    ViewBag.Title = "DetailsRole";
+    Layout = "~/Areas/Administration/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Role</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+    </dl>
+
+    <hr />
+    <h3>Users in this Role</h3>
+    <ul>
+        @{
+            foreach (Microsoft.AspNet.Identity.EntityFramework.IdentityUserRole idu in Model.Users)
+            {
+                CarSharing.Models.ApplicationUser usr = CarSharing.Models.dbContext.db.Users.Where(w => w.Id == idu.UserId).FirstOrDefault();
+                <li>
+                    @usr.Surname @usr.Name - @usr.UserName
+                </li>
+            }
+
+        }
+    </ul>
+    @Html.ActionLink("Back to List", "Index")
+
+
+</div>
